@@ -1,0 +1,64 @@
+name: benchmark
+
+on:
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event_name }}
+  cancel-in-progress: false
+
+permissions: {}
+
+jobs:
+  cache-false:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7.0.0
+        with:
+          persist-credentials: false
+
+      - name: Setup Go
+        uses: actions/setup-go@v6.5.0
+        with:
+          cache: false
+
+      - name: Download modules
+        run: |
+          set -euo pipefail
+          /usr/bin/time -v go mod download
+
+      - name: Build Go
+        run: |
+          set -euo pipefail
+          /usr/bin/time -v go build ./...
+
+  cache-true:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      actions: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7.0.0
+        with:
+          persist-credentials: false
+
+      - name: Setup Go with cache
+        uses: actions/setup-go@v6.5.0
+        with:
+          cache: true
+
+      - name: Download modules
+        run: |
+          set -euo pipefail
+          /usr/bin/time -v go mod download
+
+      - name: Build Go
+        run: |
+          set -euo pipefail
+          /usr/bin/time -v go build ./...
