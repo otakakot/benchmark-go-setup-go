@@ -13,5 +13,9 @@ func main() {
 		ctx.JSON(http.StatusOK, "pong")
 	})
 
+	engine.GET("/health", func(ctx *gin.Context) {
+		ctx.JSON(http.StatusOK, "health")
+	})
+
 	engine.Run(":8080")
 }
