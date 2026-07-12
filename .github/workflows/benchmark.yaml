@@ -24,6 +24,7 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@v6.5.0
         with:
+          go-version-file: go.mod
           cache: false
 
       - name: Download modules
@@ -51,6 +52,7 @@ jobs:
       - name: Setup Go with cache
         uses: actions/setup-go@v6.5.0
         with:
+          go-version-file: go.mod
           cache: true
 
       - name: Download modules
