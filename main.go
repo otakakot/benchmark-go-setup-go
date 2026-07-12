@@ -9,10 +9,8 @@ import (
 func main() {
 	engine := gin.Default()
 
-	engine.GET("/ping", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"message": "pong",
-		})
+	engine.GET("/ping", func(ctx *gin.Context) {
+		ctx.JSON(http.StatusOK, "pong")
 	})
 
 	engine.Run(":8080")
